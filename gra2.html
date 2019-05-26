@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<style>
+#editorArea {
+  margin:       auto;
+  width:        65vw;
+  height:       90vh;
+  font-size:    16px;
+  border-width: 1px;
+  border-style: solid;
+}
+
+#rightEditorPanel {
+   vertical-align: top;
+}
+
+#canvasWrapper {
+  text-align: center;
+}
+
+#canvas {
+  width:        30vw;
+  /* height:    90vh;  this is in the editor, constrained by the width */
+  border-width: 1px;
+  border-style: solid;
+}
+
+#drawingCanvas {
+  /* width:     90vw; */
+  height:       90vh;  /* relying on proportional scaling for the width */
+  border-width: 1px;
+  border-style: solid;
+}
+
+button {
+    background: #59e;
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    padding:5px 8px;
+    margin-right: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+
+    transition: all 0.2s ease-in-out;
+}
+button:hover, button:active, button:focus {
+    background: #74adf4;
+}
+.top-bar {
+    padding: 15px;
+    background: #135;
+    color: #fff;
+    font-size: 14px;
+}
+#runButton {
+    background: #d42d2d;
+}
+#runButton:hover,#runButton:focus,#runButton:active {
+    background: #e84848;
+}
+#showButton {
+    background: #64c31f;
+}
+#showButton:hover,#showButton:focus,#showButton:active {
+    background: #71de22;
+}
+</style>
+
+
+
+<html>
+  <head><title>Uniwersytet Dzieci JavaScript Scratchpad</title></head>
+  <body>
+    <p id="canvasWrapper"><canvas id="drawingCanvas" width="1280" height="720"></canvas></p>
+	
+<SCRIPT>
+var graphics_context = document.getElementById('drawingCanvas').getContext('2d');
+
+var fillStyles = {
+  black: 'black',
+  gray: 'gray',
+  white: 'white',
+  red: 'red',
+  green: 'green',
+  brown: 'brown',
+  yellow: 'yellow',
+  blue: 'blue',
+  magenta: 'magenta',
+  cyan: 'cyan'
+};
+var drawStyles = fillStyles;
+var colors = fillStyles;
+
+function fillRectangle(x, y, width, height, fillStyle) {
+  graphics_context.fillStyle = fillStyle;
+  graphics_context.fillRect(x, y, width, height);
+}
+
+function drawRectangle(x, y, width, height, drawStyle) {
+  graphics_context.strokeStyle = drawStyle;
+  graphics_context.strokeRect(x, y, width, height);
+}
+
+function fillCircle(x, y, r, fillStyle) {
+  graphics_context.strokeStyle = fillStyle;
+  graphics_context.fillStyle = fillStyle;
+  graphics_context.beginPath();
+  graphics_context.arc(x, y, r, 0, 2 * Math.PI);
+  graphics_context.fill();
+}
+
+function drawCircle(x, y, r, drawStyle) {
+  graphics_context.strokeStyle = drawStyle;
+  graphics_context.beginPath();
+  graphics_context.arc(x, y, r, 0, 2 * Math.PI);
+  graphics_context.stroke();
+}
+
+function color(red, green, blue) {
+  var redInt = parseInt(red);
+  if (isNaN(redInt) || redInt < 0 || redInt > 255) {
+    throw 'Invalid value for red param: ' + red;
+  }
+  var greenInt = parseInt(green);
+  if (isNaN(greenInt) || greenInt < 0 || greenInt > 255) {
+    throw 'Invalid value for green param: ' + green;
+  }
+  var blueInt = parseInt(blue);
+  if (isNaN(blueInt) || blueInt < 0 || blueInt > 255) {
+    throw 'Invalid value for blue param: ' + blueInt;
+  }
+  return '#' + redInt.toString(16).padStart(2, '0') +
+      greenInt.toString(16).padStart(2, '0') +
+      blueInt.toString(16).padStart(2, '0');
+}
+
+function registerKeyPressHandler(handler) {
+  document.onkeydown = function(event) {
+    handler(event.keyCode);
+  };
+}
+
+function log(x) {
+  console.log(x);
+}
+</SCRIPT>
+	
+    <script>// Builtin Library reference:
+//
+// colors                         : black gray white red green
+//                                  brown yellow blue magenta cyan
+// drawCircle and fillCircle      : x y radius style
+//                                  drawCircle(50, 50, 20, colors.red);
+// drawRectangle and fillRectangle: x y width height style
+//                                  fillRectangle(20, 20, 30, 10, colors.green);
+// color                          : red green blue
+//                                  color(255, 128, 128);
+// log                            : message
+//                                  log('some message');
+// registerKeyPressHandler        : handler_function
+// Add your JS code here
+
+function rysujGracza(x, y) {
+  // Głowa:
+  fillCircle(x + 16, y + 5, 5, colors.yellow);
+  fillCircle(x + 16, y + 6, 5, colors.yellow);
+  fillCircle(x + 15, y + 5, 5, colors.yellow);
+  fillCircle(x + 15, y + 6, 5, colors.yellow);
+
+  // Ręce:
+  fillRectangle(x + 4, y + 10, 24, 4, colors.blue);
+  fillRectangle(x + 3, y + 10, 3, 4, colors.cyan);
+  fillRectangle(x + 24, y + 10, 3, 4, colors.cyan);
+
+  // Tułów:
+  fillRectangle(x + 10, y + 14, 10, 5, colors.blue);
+
+  // Nogi:
+  fillRectangle(x + 10, y + 19, 10, 4, colors.green);
+  fillRectangle(x + 11, y + 22, 3, 10, colors.green);
+  fillRectangle(x + 16, y + 22, 3, 10, colors.green);
+}
+
+function rysujKamien(x, y) {
+  fillCircle(x + 16, y + 16, 14, colors.yellow);
+}
+
+
+var plansza = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0],
+               [0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
+               [0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0],
+               [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0],
+               [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+               [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+               [0, 0, 1, 0, 1, 1, 0, 2, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
+               [0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+               [0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0],
+               [0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+               [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+               [0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0],
+               [0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0],
+               [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
+
+var wierszGracza = 7;
+var kolumnaGracza = 7;
+
+var wierszKamienia = 2;
+var kolumnaKamienia = 2;
+
+function rysujPlansze() {
+    for (var wiersz = 0; wiersz < plansza.length; wiersz++) {
+        var y = wiersz * 32;
+        for (var kolumna = 0; kolumna < plansza[wiersz].length; kolumna++) {
+            var x = kolumna * 32;
+            if (plansza[wiersz][kolumna] === 0) {
+                fillRectangle(x, y, 32, 32, colors.cyan);
+            } else if (plansza[wiersz][kolumna] == 1) {
+                fillRectangle(x, y, 32, 32, colors.magenta);
+            } else if (plansza[wiersz][kolumna] == 2) {
+                fillRectangle(x, y, 32, 32, colors.cyan);
+                fillCircle(x + 16, y + 16, 15, colors.gray);
+            } else {
+                log('Nie rozumiem pola [' + wiersz + '][' + kolumna + ']: '
+                    + plansza[wiersz][kolumna]);
+            }
+        }
+    }
+    rysujGracza(kolumnaGracza * 32, wierszGracza * 32);
+    if(plansza[wierszKamienia][kolumnaKamienia] !== 2) {
+      rysujKamien(kolumnaKamienia * 32, wierszKamienia * 32);
+    }
+}
+    
+
+function obsluzKlawisz(e) {
+    //log('Nacisnieto klawisz: ' + e);
+    var nowyWiersz = wierszGracza
+    var nowaKolumna = kolumnaGracza
+    
+    if (e == 68) {
+        nowaKolumna++
+    }
+    if (e == 87) {
+        nowyWiersz--
+    }
+    if (e == 65) {
+        nowaKolumna--
+    }
+    if (e == 83) {
+        nowyWiersz++
+    }
+    if (nowyWiersz >= 0 &&
+        nowaKolumna >= 0 &&
+        nowyWiersz < plansza.length &&
+        nowaKolumna < plansza[nowyWiersz].length &&
+        plansza[nowyWiersz][nowaKolumna] === 0) {
+        if(nowyWiersz === wierszKamienia && nowaKolumna === kolumnaKamienia) {
+            var nowyWierszKamienia = wierszKamienia;
+            var nowaKolumnaKamienia = kolumnaKamienia;
+            
+            if (e == 68) {
+                nowaKolumnaKamienia++
+            }
+            if (e == 87) {
+                nowyWierszKamienia--
+            }
+            if (e == 65) {
+                nowaKolumnaKamienia--
+            }
+            if (e == 83) {
+                nowyWierszKamienia++
+            }
+            
+            if (nowyWierszKamienia >= 0 &&
+                nowaKolumnaKamienia >= 0 &&
+                nowyWierszKamienia < plansza.length &&
+                nowaKolumnaKamienia < plansza[nowyWiersz].length &&
+                plansza[nowyWierszKamienia][nowaKolumnaKamienia] !== 1) {
+
+                wierszKamienia = nowyWierszKamienia;
+                kolumnaKamienia = nowaKolumnaKamienia;
+                wierszGracza = nowyWiersz;
+                kolumnaGracza = nowaKolumna;
+            }
+        } else {
+            wierszGracza = nowyWiersz;
+            kolumnaGracza = nowaKolumna;
+        }
+    }    
+    
+    rysujPlansze();
+}
+
+registerKeyPressHandler(obsluzKlawisz);
+rysujPlansze();</script>
+  </body>
+</html>
